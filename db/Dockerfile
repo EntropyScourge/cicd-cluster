@@ -1,5 +1,5 @@
 # Use the official PostgreSQL image from Docker Hub
-FROM postgres:15
+FROM postgres
 
 # Set environment variables for PostgreSQL
 ENV POSTGRES_USER=admin
@@ -10,7 +10,7 @@ ENV POSTGRES_DB=postgresdb
 EXPOSE 5432
 
 # Add any custom initialization scripts (optional)
-COPY seed.sql /docker-entrypoint-initdb.d/
+COPY db/seed.sql /docker-entrypoint-initdb.d/
 
 # Default command to run PostgreSQL
 CMD ["postgres"]
