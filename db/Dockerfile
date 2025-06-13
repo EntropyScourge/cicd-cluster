@@ -3,8 +3,8 @@ FROM postgres
 
 # Set environment variables for PostgreSQL
 ENV POSTGRES_USER=admin
-ENV POSTGRES_PASSWORD=adminpassword
-ENV POSTGRES_DB=postgresdb
+ENV POSTGRES_PASSWORD=postgres
+ENV POSTGRES_DB=postgres
 
 # Expose the default PostgreSQL port
 EXPOSE 5432

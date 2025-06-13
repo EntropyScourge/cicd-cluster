@@ -4,6 +4,16 @@ from psycopg2 import connect
 
 app = FastAPI()
 
+def connect_to_db():
+    # Replace with your actual database connection details 
+    return connect(
+        host="db",
+        port=5432,
+        database="postgres",
+        user="admin",
+        password="postgres"
+    )
+
 @app.get("/", response_class=HTMLResponse)
 def get_root():
     return '''
@@ -19,16 +29,13 @@ def get_root():
 
 @app.get("/posts", response_class=HTMLResponse)
 def get_posts():
-    connection = connect(
-        dbname="postgresdb",
-        user="admin",
-        password="adminpassword",
-        host="postgres",
-        port="5432"
-    )
+    connection = connect_to_db()
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM posts;")
+    cursor.execute("CREATE TABLE IF NOT EXISTS posts (id SERIAL PRIMARY KEY, title TEXT, content TEXT);")
+    cursor.execute("INSERT INTO posts (title, content) VALUES ('First Post', 'This is a sample post.'), ('Second Post', 'This is a second post.');")
+    cursor.execute("SELECT title, content FROM posts;")
     posts = cursor.fetchall()
+    post_html = '<br>'.join(['<h2>{}</h2> <p>{}</p>'.format(title, content) for title, content in posts])
     cursor.close()
     connection.close()
 
@@ -41,4 +48,4 @@ def get_posts():
         <h1>Posts</h1>
         <p>{posts}</p>
         <p><a href="/">Back to Home</a></p>
-    '''.format(posts=posts)
+    '''.format(posts=post_html)
