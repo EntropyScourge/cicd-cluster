@@ -1,6 +1,4 @@
-CREATE DATABASE IF NOT EXISTS postgres;
-
-\c postgres;
+\c postgres
 
 CREATE TABLE IF NOT EXISTS posts (
     id SERIAL PRIMARY KEY,

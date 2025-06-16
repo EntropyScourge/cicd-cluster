@@ -31,8 +31,6 @@ def get_root():
 def get_posts():
     connection = connect_to_db()
     cursor = connection.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS posts (id SERIAL PRIMARY KEY, title TEXT, content TEXT);")
-    cursor.execute("INSERT INTO posts (title, content) VALUES ('First Post', 'This is a sample post.'), ('Second Post', 'This is a second post.');")
     cursor.execute("SELECT title, content FROM posts;")
     posts = cursor.fetchall()
     post_html = '<br>'.join(['<h2>{}</h2> <p>{}</p>'.format(title, content) for title, content in posts])
