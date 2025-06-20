@@ -15,19 +15,13 @@ spec:
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
-            claimName: database-persistent-volume-claim
+            claimName: db-persistent-volume-claim
       containers:
-        - name: postgres
-          image: postgres
+        - name: db
+          image: entropyscourge/app-db:latest
           ports:
             - containerPort: 5432
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
               subPath: postgres
-          env:
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: pgpassword
-                  key: PGPASSWORD

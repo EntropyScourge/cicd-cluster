@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: client-deployment
+  name: app-deployment
 spec:
   replicas: 3
   selector:
@@ -17,3 +17,6 @@ spec:
           image: entropyscourge/basic-fastapi-app:latest
           ports:
             - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: postgres://postgres:password@db:5432/postgres

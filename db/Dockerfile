@@ -10,7 +10,7 @@ ENV POSTGRES_DB=postgres
 EXPOSE 5432
 
 # Add any custom initialization scripts (optional)
-COPY db/seed.sql /docker-entrypoint-initdb.d/
+COPY seed.sql /docker-entrypoint-initdb.d/
 
 # Default command to run PostgreSQL
 CMD ["postgres"]
