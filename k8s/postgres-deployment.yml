@@ -7,10 +7,12 @@ spec:
   selector:
     matchLabels:
       component: postgres
+      app: postgres
   template:
     metadata:
       labels:
         component: postgres
+        app: postgres
     spec:
       volumes:
         - name: postgres-storage
