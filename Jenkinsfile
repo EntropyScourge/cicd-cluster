@@ -2,7 +2,9 @@ pipeline {
     agent any
 
     environment {
-        // Define environment variables here if needed
+        def DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
+        def SSH_CREDENTIALS_ID = 'ssh-credentials'
+        def CLUSTER_IP = 'cluster-ip-address'
     }
 
     stages {
@@ -13,22 +15,32 @@ pipeline {
         }
         stage('Build') {
             steps {
-                echo 'Building the project...'
-                // Add your build commands here, e.g.:
-                // sh './gradlew build'
+                echo 'Building the app image...'
+                cd 'app'
+                docker 'build -t entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER} .'
+                docker 'push entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}'
+                echo 'Building the database image...'
+                cd '../db'
+                docker 'build -t entropyscourge/app-db:${env.BUILD_NUMBER} .'                
+                docker 'push entropyscourge/app-db:${env.BUILD_NUMBER}'
             }
         }
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                // Add your test commands here, e.g.:
-                // sh './gradlew test'
+                docker 'run -d --rm entropyscourge/basic-fastapi-app:latest'
+                docker 'run -d --rm entropyscourge/app-db:latest'
+                curl 'http://localhost:8000/posts' // Assuming the app exposes a health endpoint
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
-                // Add your deployment commands here
+                //ssh to remote server and deploy the application
+                sshagent([env.SSH_CREDENTIALS_ID]) {
+                    ssh '-i ssh -i .ssh/app-cluster_key_2.pem azureuser@$CLUSTER_IP'
+                    docker 'pull entropyscourge/basic-fastapi-app:latest'
+                    docker 'pull entropyscourge/app-db:latest'
             }
         }
     }
