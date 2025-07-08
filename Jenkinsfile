@@ -41,6 +41,7 @@ pipeline {
                     ssh '-i ssh -i .ssh/app-cluster_key_2.pem azureuser@$CLUSTER_IP'
                     docker 'pull entropyscourge/basic-fastapi-app:latest'
                     docker 'pull entropyscourge/app-db:latest'
+                }
             }
         }
     }
