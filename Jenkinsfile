@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        def DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
-        def SSH_CREDENTIALS_ID = 'ssh-credentials'
-        def CLUSTER_IP = 'cluster-ip-address'
+        def DOCKER_CREDENTIALS_ID = credentials('dockerhub-credentials')
+        def SSH_CREDENTIALS_ID = credentials('azure-ssh-credentials')
+        def CLUSTER_IP = credentials('cluster-ip-address')
     }
 
     stages {
