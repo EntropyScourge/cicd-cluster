@@ -30,7 +30,8 @@ pipeline {
                 echo 'Running tests...'
                 docker 'run -d --rm entropyscourge/basic-fastapi-app:latest'
                 docker 'run -d --rm entropyscourge/app-db:latest'
-                curl 'http://localhost:8000/posts' // Assuming the app exposes a health endpoint
+                //curl 'http://localhost:8000/health' // Assuming the app exposes a health endpoint
+                curl 'http://localhost:8000/posts'
             }
         }
         stage('Deploy') {
