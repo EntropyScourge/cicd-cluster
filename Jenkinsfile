@@ -38,10 +38,12 @@ pipeline {
             steps {
                 echo 'Deploying application...'
                 //ssh to remote server and deploy the application
-                sshagent([env.SSH_CREDENTIALS_ID]) {
-                    ssh '-i ssh -i .ssh/app-cluster_key_2.pem azureuser@$CLUSTER_IP'
-                    docker 'pull entropyscourge/basic-fastapi-app:latest'
-                    docker 'pull entropyscourge/app-db:latest'
+                sshagent(credentials: [env.SSH_CREDENTIALS_ID]) {
+                    sh '''
+                    ssh -i ssh -i .ssh/app-cluster_key_2.pem azureuser@$CLUSTER_IP
+                    docker pull entropyscourge/basic-fastapi-app:latest
+                    docker pull entropyscourge/app-db:latest
+                    '''
                 }
             }
         }
