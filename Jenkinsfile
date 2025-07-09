@@ -16,11 +16,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the app image...'
-                cd 'app'
+                sh 'cd app'
                 docker 'build -t entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER} .'
                 docker 'push entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}'
                 echo 'Building the database image...'
-                cd '../db'
+                sh 'cd ../db'
                 docker 'build -t entropyscourge/app-db:${env.BUILD_NUMBER} .'                
                 docker 'push entropyscourge/app-db:${env.BUILD_NUMBER}'
             }
