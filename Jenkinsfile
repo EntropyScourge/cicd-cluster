@@ -17,12 +17,20 @@ pipeline {
             steps {
                 echo 'Building the app image...'
                 sh 'cd app'
-                docker 'build -t entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER} .'
-                docker 'push entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}'
+                docker.buildAndPush(
+                    image: "entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}",
+                    credentialsId: DOCKER_CREDENTIALS_ID,
+                    registryUrl: 'https://index.docker.io/v1/',
+                    dockerfile: 'Dockerfile'
+                )
                 echo 'Building the database image...'
                 sh 'cd ../db'
-                docker 'build -t entropyscourge/app-db:${env.BUILD_NUMBER} .'                
-                docker 'push entropyscourge/app-db:${env.BUILD_NUMBER}'
+                docker.buildAndPush(
+                    image: "entropyscourge/app-db:${env.BUILD_NUMBER}",
+                    credentialsId: DOCKER_CREDENTIALS_ID,
+                    registryUrl: 'https://index.docker.io/v1/',
+                    dockerfile: 'Dockerfile'
+                )
             }
         }
         stage('Test') {
