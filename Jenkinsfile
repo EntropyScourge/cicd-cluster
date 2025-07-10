@@ -18,22 +18,24 @@ pipeline {
                 echo 'Building the app image...'
                 sh 'cd app'
                 script {
-                    docker.buildAndPush(
-                        image: "entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}",
-                        credentialsId: DOCKER_CREDENTIALS_ID,
-                        registryUrl: 'https://index.docker.io/v1/',
-                        dockerfile: 'Dockerfile'
-                    )
+                    def appImage = docker.build(
+                                "entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}",
+                                "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
+                                "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
+                                "--no-cache ."
+                            )
+                    appImage.push("${env.BUILD_NUMBER}")
                 }
                 echo 'Building the database image...'
                 sh 'cd ../db'
                 script {
-                    docker.buildAndPush(
-                        image: "entropyscourge/app-db:${env.BUILD_NUMBER}",
-                        credentialsId: DOCKER_CREDENTIALS_ID,
-                        registryUrl: 'https://index.docker.io/v1/',
-                        dockerfile: 'Dockerfile'
-                    )
+                    def dbImage = docker.build(
+                                "entropyscourge/app-db:${env.BUILD_NUMBER}",
+                                "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
+                                "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
+                                "--no-cache ."
+                            )
+                    dbImage.push("${env.BUILD_NUMBER}")
                 }
             }
         }
