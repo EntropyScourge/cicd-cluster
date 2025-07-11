@@ -16,7 +16,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the app image...'
-                sh 'cd app'
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
                         def appImage = docker.build(
@@ -29,7 +28,6 @@ pipeline {
                     }
                 }
                 echo 'Building the database image...'
-                sh 'cd ../db'
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
                         def dbImage = docker.build(
