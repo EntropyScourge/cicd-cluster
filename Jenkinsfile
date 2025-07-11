@@ -48,12 +48,8 @@ pipeline {
                 script {
                     def appImage = docker.image("entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}")
                     def dbImage = docker.image("entropyscourge/app-db:${env.BUILD_NUMBER}")
-                    appImage.run(
-                        "-d --rm entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}"
-                    )
-                    dbImage.run(
-                        "-d --rm entropyscourge/app-db:${env.BUILD_NUMBER}"
-                    )
+                    appImage.run()
+                    dbImage.run()
                 }
             }
         }
