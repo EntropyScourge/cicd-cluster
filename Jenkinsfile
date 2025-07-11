@@ -50,6 +50,7 @@ pipeline {
                     def dbImage = docker.image("entropyscourge/app-db:${env.BUILD_NUMBER}")
                     dbImage.run()
                     appImage.inside('-p 8000:8000') {
+                        sh 'export ENV=TEST' // Set environment variable for testing
                         sh 'pytest app/health_check.py' // Assuming you have a test file for health checks
                     }
                     dbImage.stop()
