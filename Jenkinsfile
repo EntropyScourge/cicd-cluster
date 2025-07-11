@@ -48,7 +48,7 @@ pipeline {
                 script {
                     def appImage = docker.image("entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}")
                     def dbImage = docker.image("entropyscourge/app-db:${env.BUILD_NUMBER}")
-                    dbImage.run()
+                    dbImage.run('-p 5432:5432')
                     appImage.inside('-p 8000:8000') {
                         // Set environment variable for testing
                         sh '''
