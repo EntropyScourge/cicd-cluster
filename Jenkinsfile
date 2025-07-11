@@ -19,11 +19,11 @@ pipeline {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
                         def appImage = docker.build(
-                                    "entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}",
-                                    "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
-                                    "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
-                                    "--no-cache app"
-                                )
+                            "entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}",
+                            "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
+                            "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
+                            "--no-cache app"
+                        )
                         appImage.push("${env.BUILD_NUMBER}")
                     }
                 }
@@ -31,10 +31,10 @@ pipeline {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
                         def dbImage = docker.build(
-                        "entropyscourge/app-db:${env.BUILD_NUMBER}",
-                        "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
-                        "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
-                        "--no-cache db"
+                            "entropyscourge/app-db:${env.BUILD_NUMBER}",
+                            "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
+                            "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
+                            "--no-cache db"
                         )
                         dbImage.push("${env.BUILD_NUMBER}")
                     }

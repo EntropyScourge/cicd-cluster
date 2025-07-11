@@ -1,16 +1,25 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from psycopg2 import connect
-
+import os
+from fastapi.responses import JSONResponse
 app = FastAPI()
+
+print(os.getenv("ENV"))
+if os.getenv("ENV") == "DEV":
+    DB_HOST = "localhost"
+    PG_USER = os.getenv("PG_USER")
+else:
+    DB_HOST = "db"
+    PG_USER = "admin"
 
 def connect_to_db():
     # Replace with your actual database connection details 
     return connect(
-        host="db",
+        host=DB_HOST,
         port=5432,
         database="postgres",
-        user="admin",
+        user=PG_USER,
         password="postgres"
     )
 
@@ -47,3 +56,12 @@ def get_posts():
         <p>{posts}</p>
         <p><a href="/">Back to Home</a></p>
     '''.format(posts=post_html)
+
+@app.get("/health", response_class=JSONResponse)
+def health_check():
+    try:
+        connection = connect_to_db()
+        connection.close()
+        return {"status": "healthy"}
+    except Exception as e:
+        return {"status": "unhealthy", "error": str(e)}
