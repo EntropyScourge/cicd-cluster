@@ -18,7 +18,7 @@ pipeline {
                 echo 'Building the app image...'
                 sh 'cd app'
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
                         def appImage = docker.build(
                                     "entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}",
                                     "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
@@ -31,7 +31,7 @@ pipeline {
                 echo 'Building the database image...'
                 sh 'cd ../db'
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
                         def dbImage = docker.build(
                         "entropyscourge/app-db:${env.BUILD_NUMBER}",
                         "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
