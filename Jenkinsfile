@@ -48,8 +48,11 @@ pipeline {
                 script {
                     def appImage = docker.image("entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}")
                     def dbImage = docker.image("entropyscourge/app-db:${env.BUILD_NUMBER}")
-                    appImage.run()
                     dbImage.run()
+                    appImage.inside('-p 8000:8000') {
+                        sh 'pytest app/health_check.py' // Assuming you have a test file for health checks
+                    }
+                    dbImage.stop()
                 }
             }
         }
