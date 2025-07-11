@@ -22,7 +22,7 @@ pipeline {
                                 "entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}",
                                 "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
                                 "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
-                                "--no-cache ."
+                                "--no-cache app"
                             )
                     appImage.push("${env.BUILD_NUMBER}")
                 }
@@ -33,7 +33,7 @@ pipeline {
                                 "entropyscourge/app-db:${env.BUILD_NUMBER}",
                                 "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
                                 "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
-                                "--no-cache ."
+                                "--no-cache db"
                             )
                     dbImage.push("${env.BUILD_NUMBER}")
                 }
