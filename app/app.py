@@ -6,10 +6,10 @@ from fastapi.responses import JSONResponse
 app = FastAPI()
 
 print(os.getenv("ENV"))
-if os.getenv("ENV") is 'DEV':
+if os.getenv("ENV") == 'DEV':
     DB_HOST = "localhost"
     PG_USER = os.getenv("PG_USER")
-elif os.getenv("ENV") is 'TEST':
+elif os.getenv("ENV") == 'TEST':
     DB_HOST = "localhost"
     PG_USER = "admin"
 else:
