@@ -18,24 +18,29 @@ pipeline {
                 echo 'Building the app image...'
                 sh 'cd app'
                 script {
-                    def appImage = docker.build(
-                                "entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}",
-                                "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
-                                "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
-                                "--no-cache app"
-                            )
-                    appImage.push("${env.BUILD_NUMBER}")
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                        def appImage = docker.build(
+                                    "entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}",
+                                    "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
+                                    "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
+                                    "--no-cache app"
+                                )
+                        appImage.push("${env.BUILD_NUMBER}")
+                    }
                 }
                 echo 'Building the database image...'
                 sh 'cd ../db'
                 script {
-                    def dbImage = docker.build(
-                                "entropyscourge/app-db:${env.BUILD_NUMBER}",
-                                "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
-                                "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
-                                "--no-cache db"
-                            )
-                    dbImage.push("${env.BUILD_NUMBER}")
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                        def dbImage = docker.build(
+                        "entropyscourge/app-db:${env.BUILD_NUMBER}",
+                        "--build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ') " +
+                        "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
+                        "--no-cache db"
+                        )
+                        dbImage.push("${env.BUILD_NUMBER}")
+                    }
+
                 }
             }
         }
