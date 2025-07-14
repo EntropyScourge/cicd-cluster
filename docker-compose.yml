@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: .
+      context: app
       dockerfile: app/Dockerfile
     ports:
       - "80:8000"
@@ -11,7 +11,7 @@ services:
       - ./app:/usr/src/app
   db:
     build:
-      context: .
+      context: db
       dockerfile: db/Dockerfile
     volumes:
       - init_scripts:/docker-entrypoint-initdb.d
