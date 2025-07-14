@@ -71,7 +71,7 @@ pipeline {
             steps {
                 echo 'Deploying application...'
                 //ssh to remote server and deploy the application
-                sshagent(credentials: [env.SSH_CREDENTIALS_ID]) {
+                sshagent(credentials: [credentials('azure-ssh-credentials')]) {
                     sh '''
                     ssh -i ssh -i .ssh/app-cluster_key_2.pem azureuser@$CLUSTER_IP
                     docker pull entropyscourge/basic-fastapi-app:latest
