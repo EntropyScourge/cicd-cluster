@@ -45,19 +45,29 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                script {
-                    def appImage = docker.image("entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}")
-                    def dbImage = docker.image("entropyscourge/app-db:${env.BUILD_NUMBER}")
-                    dbImage.run()
-                    appImage.inside('-p 8000:8000') {
-                        // Set environment variable for testing
-                        sh '''
-                        export ENV=TEST
-                        pytest app/health_check.py
-                        '''
-                    }
-                    dbImage.stop()
-                }
+                // script {
+                //     def appImage = docker.image("entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}")
+                //     def dbImage = docker.image("entropyscourge/app-db:${env.BUILD_NUMBER}")
+                //     dbImage.run()
+                //     appImage.inside('-p 8000:8000') {
+                //         // Set environment variable for testing
+                //         sh '''
+                //         export ENV=TEST
+                //         pytest app/health_check.py
+                //         '''
+                //     }
+                //     dbImage.stop()
+                // }
+                sh '''
+                docker run --rm -d --name app-db entropyscourge/app-db:${env.BUILD_NUMBER}
+                docker run --rm -d --name basic-fastapi-app -p 8000:8000 \
+                --link app-db:db entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}
+                sleep 10
+                export ENV=TEST
+                pytest app/health_check.py
+                docker stop basic-fastapi-app
+                docker stop app-db
+                '''
             }
         }
         stage('Deploy') {
