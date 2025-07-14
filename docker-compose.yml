@@ -11,7 +11,7 @@ services:
       - ./app:/usr/src/app
   db:
     build:
-      context: db
+      context: .
       dockerfile: db/Dockerfile
     volumes:
       - init_scripts:/docker-entrypoint-initdb.d
