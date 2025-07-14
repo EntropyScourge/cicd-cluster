@@ -59,14 +59,11 @@ pipeline {
                 //     dbImage.stop()
                 // }
                 sh '''
-                docker run --rm -d --name app-db entropyscourge/app-db:${env.BUILD_NUMBER}
-                docker run --rm -d --name basic-fastapi-app -p 8000:8000 \
-                --link app-db:db entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}
-                sleep 10
-                export ENV=TEST
-                pytest app/health_check.py
-                docker stop basic-fastapi-app
-                docker stop app-db
+                sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                sudo chmod +x /usr/local/bin/docker-compose
+                sudo docker-compose -f docker-compose.yml up -d --build
+                sudo docker-compose -f docker-compose.yml exec app pytest app/health_check.py
+                sudo docker-compose -f docker-compose.yml down
                 '''
             }
         }
