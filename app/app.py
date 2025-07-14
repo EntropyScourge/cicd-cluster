@@ -10,7 +10,7 @@ if os.getenv("ENV") == 'DEV':
     DB_HOST = "localhost"
     PG_USER = os.getenv("PG_USER")
 elif os.getenv("ENV") == 'TEST':
-    DB_HOST = "entropyscourge/app-db"
+    DB_HOST = "db"
     PG_USER = "admin"
 else:
     DB_HOST = "db"
