@@ -73,9 +73,9 @@ pipeline {
                 //ssh to remote server and deploy the application
                 sshagent(['azure-ssh-credentials']) {
                     sh '''
-                    ssh -i ssh -i .ssh/app-cluster_key_2.pem azureuser@$CLUSTER_IP
-                    docker pull entropyscourge/basic-fastapi-app:latest
-                    docker pull entropyscourge/app-db:latest
+                    ssh -i ssh -o StrictHostKeyChecking=no azureuser@$CLUSTER_IP
+                    export KUBECONFIG=/home/azureuser/.kube/config
+                    kubectl apply -f k8s
                     '''
                 }
             }
