@@ -76,7 +76,7 @@ pipeline {
                     ssh -o StrictHostKeyChecking=no azureuser@'''+"${env.CLUSTER_IP}"+'''
                     <<EOF
                     export KUBECONFIG=/home/azureuser/.kube/config
-                    kubectl apply -f k8s"
+                    kubectl set image k8s/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER} --record
                     EOF
                     '''
                 }
