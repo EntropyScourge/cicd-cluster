@@ -74,8 +74,10 @@ pipeline {
                 sshagent(['azure-ssh-credentials']) {
                     sh '''
                     ssh -o StrictHostKeyChecking=no azureuser@$CLUSTER_IP
+                    <<EOF
                     export KUBECONFIG=/home/azureuser/.kube/config
-                    kubectl apply -f k8s
+                    kubectl apply -f k8s"
+                    EOF
                     '''
                 }
             }
