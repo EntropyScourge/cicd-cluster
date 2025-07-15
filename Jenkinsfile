@@ -45,19 +45,6 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                // script {
-                //     def appImage = docker.image("entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}")
-                //     def dbImage = docker.image("entropyscourge/app-db:${env.BUILD_NUMBER}")
-                //     dbImage.run()
-                //     appImage.inside('-p 8000:8000') {
-                //         // Set environment variable for testing
-                //         sh '''
-                //         export ENV=TEST
-                //         pytest app/health_check.py
-                //         '''
-                //     }
-                //     dbImage.stop()
-                // }
                 sh '''
                 sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
                 sudo chmod +x /usr/local/bin/docker-compose
@@ -76,7 +63,7 @@ pipeline {
                     ssh -o StrictHostKeyChecking=no azureuser@'''+"${env.CLUSTER_IP}"+'''
                     <<EOF
                     export KUBECONFIG=/home/azureuser/.kube/config
-                    kubectl set image k8s/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER} --record
+                    kubectl set image k8s/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:'''+"${env.BUILD_NUMBER}"+'''--record
                     EOF
                     '''
                 }
