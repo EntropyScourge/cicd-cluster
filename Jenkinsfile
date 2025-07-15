@@ -73,7 +73,7 @@ pipeline {
                 //ssh to remote server and deploy the application
                 sshagent(['azure-ssh-credentials']) {
                     sh '''
-                    ssh -o StrictHostKeyChecking=no azureuser@$CLUSTER_IP
+                    ssh -o StrictHostKeyChecking=no azureuser@'''+"${env.CLUSTER_IP}"+'''
                     <<EOF
                     export KUBECONFIG=/home/azureuser/.kube/config
                     kubectl apply -f k8s"
