@@ -15,6 +15,7 @@ spec:
       containers:
         - name: app
           image: entropyscourge/basic-fastapi-app:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           env:

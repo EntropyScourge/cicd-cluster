@@ -24,6 +24,7 @@ pipeline {
                             "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
                             "--no-cache app"
                         )
+                        appImage.tag("latest")
                         appImage.push("${env.BUILD_NUMBER}")
                     }
                 }
@@ -36,6 +37,7 @@ pipeline {
                             "--build-arg VCS_REF=\$(git rev-parse --short HEAD) " +
                             "--no-cache db"
                         )
+                        dbImage.tag("latest")
                         dbImage.push("${env.BUILD_NUMBER}")
                     }
 

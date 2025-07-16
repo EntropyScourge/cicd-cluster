@@ -21,6 +21,7 @@ spec:
       containers:
         - name: db
           image: entropyscourge/app-db:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5432
           volumeMounts:
