@@ -65,9 +65,7 @@ pipeline {
                 sshagent(['azure-ssh-credentials']) {
                     sh """
                     ssh -o StrictHostKeyChecking=no azureuser@${env.CLUSTER_IP}\\
-                    cd cicd-cluster/ &&
-                    which kubectl &&
-                    kubectl apply -f k8s
+                    kubectl apply -f cicd-cluster/k8s
                     """
                 }
             }
