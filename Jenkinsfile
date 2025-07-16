@@ -68,6 +68,7 @@ pipeline {
                     <<EOF
                     export KUBECONFIG=/home/azureuser/.kube/config
                     echo \$KUBECONFIG
+                    touch hello.txt
                     ls hello.txt
                     cd /home/azureuser/cicd-cluster
                     kubectl set image k8s/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}
