@@ -65,6 +65,10 @@ pipeline {
                 sshagent(['azure-ssh-credentials']) {
                     sh """
                     ssh -o StrictHostKeyChecking=no azureuser@${env.CLUSTER_IP}\\
+                    kubectl set image cicd-cluster/k8s/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}\\
+                    kubectl set image cicd-cluster/k8s/postgres-deployment db=entropyscourge/app-db:${env.BUILD_NUMBER}\\
+                    kubectl rollout status deployment/app-deployment\\
+                    kubectl rollout status deployment/postgres-deployment\\
                     kubectl apply -f cicd-cluster/k8s
                     """
                 }
