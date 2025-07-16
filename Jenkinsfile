@@ -68,6 +68,8 @@ pipeline {
                     <<EOF
                     export KUBECONFIG=/home/azureuser/.kube/config
                     kubectl set image k8s/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:'''+"${env.BUILD_NUMBER}"+'''--record
+                    kubectl set image k8s/postgres-deployment db=entropyscourge/app-db:'''+"${env.BUILD_NUMBER}"+''' --record
+                    kubectl apply -f k8s
                     EOF
                     '''
                 }
