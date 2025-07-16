@@ -64,17 +64,15 @@ pipeline {
                 //ssh to remote server and deploy the application
                 sshagent(['azure-ssh-credentials']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no azureuser@${env.CLUSTER_IP}
-                    <<EOF
-                    export KUBECONFIG=/home/azureuser/.kube/config
-                    echo \$KUBECONFIG
-                    touch hello.txt
-                    ls hello.txt
-                    cd /home/azureuser/cicd-cluster
-                    kubectl set image k8s/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}
-                    kubectl set image k8s/postgres-deployment db=entropyscourge/app-db:${env.BUILD_NUMBER}
+                    ssh -o StrictHostKeyChecking=no azureuser@${env.CLUSTER_IP}\\
+                    export KUBECONFIG=/home/azureuser/.kube/config\\
+                    echo \$KUBECONFIG\\
+                    touch hello.txt\\
+                    ls hello.txt\\
+                    cd /home/azureuser/cicd-cluster\\
+                    kubectl set image k8s/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}\\
+                    kubectl set image k8s/postgres-deployment db=entropyscourge/app-db:${env.BUILD_NUMBER}\\
                     kubectl apply -f k8s
-                    EOF
                     """
                 }
             }
