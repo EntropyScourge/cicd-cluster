@@ -26,6 +26,7 @@ pipeline {
                         )
                         appImage.tag("latest")
                         appImage.push("${env.BUILD_NUMBER}")
+                        appImage.push("latest")
                     }
                 }
                 echo 'Building the database image...'
@@ -39,6 +40,7 @@ pipeline {
                         )
                         dbImage.tag("latest")
                         dbImage.push("${env.BUILD_NUMBER}")
+                        dbImage.push("latest")
                     }
 
                 }
