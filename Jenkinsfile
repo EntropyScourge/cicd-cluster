@@ -66,7 +66,7 @@ pipeline {
                     sh """
                     ssh -o StrictHostKeyChecking=no azureuser@${env.CLUSTER_IP}\\
                     cd cicd-cluster/ &&
-                    kubectl set image k8s/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER} &&
+                    kubectl set image deployment/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER} &&
                     kubectl rollout status deployment/app-deployment &&
                     kubectl apply -f k8s
                     """
