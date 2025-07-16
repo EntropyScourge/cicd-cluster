@@ -67,7 +67,7 @@ pipeline {
                     ssh -o StrictHostKeyChecking=no azureuser@${env.CLUSTER_IP}
                     <<EOF
                     export KUBECONFIG=/home/azureuser/.kube/config
-                    echo $KUBECONFIG
+                    echo \$KUBECONFIG
                     ls hello.txt
                     cd /home/azureuser/cicd-cluster
                     kubectl set image k8s/app-deployment basic-fastapi-app=entropyscourge/basic-fastapi-app:${env.BUILD_NUMBER}
