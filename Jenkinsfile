@@ -66,6 +66,7 @@ pipeline {
                     sh """
                     ssh -o StrictHostKeyChecking=no azureuser@${env.CLUSTER_IP}\\
                     cd cicd-cluster/ &&
+                    where kubectl
                     kubectl apply -f k8s
                     """
                 }
