@@ -34,7 +34,7 @@ def get_root():
             <title>Basic App</title>
         </head>
         <body>
-        <h1>Welcome to the Basic App</h1>
+        <h1>Welcome to the Basic FastAPI App</h1>
         <p>This is a simple FastAPI application, created by EntropyScourge (AKA Joanna Link), for the purpose of demonstrating a simple CI/CD pipeline.</p>
         <p><a href="/posts">View Posts</a></p>
     '''
